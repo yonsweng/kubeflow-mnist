@@ -8,8 +8,8 @@ def preprocess(data_dir: str):
     fashion_mnist = keras.datasets.fashion_mnist
     (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
 
-    train_images = train_images / 255.0
-    test_images = test_images / 255.0
+    train_images = (train_images - train_images.mean()) / train_images.std()
+    test_images = (test_images - train_images.mean()) / train_images.std()
 
     os.makedirs(data_dir, exist_ok=True)
 
@@ -28,7 +28,7 @@ def preprocess(data_dir: str):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Kubeflow MNIST training script')
-    parser.add_argument('--data_dir', help='path to images and labels.')
+    parser.add_argument('--data-dir', help='path to images and labels.')
     args = parser.parse_args()
 
     preprocess(data_dir=args.data_dir)
